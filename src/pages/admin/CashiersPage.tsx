@@ -6,7 +6,7 @@ import { useFormValidation } from '../../hooks/useFormValidation';
 import { validators, errorMessages } from '../../utils/validators';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
+import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
 import Modal from '../../components/ui/Modal';
 import Table from '../../components/ui/Table';
@@ -203,7 +203,7 @@ export default function CashiersPage() {
                 ${Number(cashier.initialBalance).toFixed(2)}
               </td>
               <td className="px-6 py-4">
-                <Badge variant={cashier.isActive ? 'success' : 'gray'}>
+                <Badge variant={cashier.isActive ? 'success' : 'neutral'}>
                   {cashier.isActive ? 'Activo' : 'Inactivo'}
                 </Badge>
               </td>

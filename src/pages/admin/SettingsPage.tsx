@@ -71,9 +71,7 @@ export default function SettingsPage() {
       setMessage('✅ Configuración guardada correctamente');
       await loadSettings();
     } catch (err: any) {
-      setMessage(
-        '❌ ' + (err.response?.data?.message || 'Error al guardar'),
-      );
+      setMessage('❌ ' + (err.response?.data?.message || 'Error al guardar'));
     } finally {
       setSaving(false);
     }
@@ -90,7 +88,9 @@ export default function SettingsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Configuración</h1>
+        <h1 className="text-3xl font-display font-bold text-gray-900">
+          Configuración
+        </h1>
         <p className="text-gray-500 mt-1">
           Configuración general del sistema
         </p>
@@ -106,6 +106,7 @@ export default function SettingsPage() {
                 setFormData({ ...formData, systemName: e.target.value })
               }
               required
+              placeholder="NUMERIX"
             />
           </div>
         </Card>
@@ -115,7 +116,7 @@ export default function SettingsPage() {
             <Input
               label="Duración de la ronda (segundos)"
               type="number"
-              value={formData.roundDurationSeconds}
+              value={String(formData.roundDurationSeconds)}
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -129,7 +130,7 @@ export default function SettingsPage() {
             <Input
               label="Jackpot inicial"
               type="number"
-              value={formData.initialJackpot}
+              value={String(formData.initialJackpot)}
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -142,7 +143,7 @@ export default function SettingsPage() {
             <Input
               label="Incremento del jackpot (%)"
               type="number"
-              value={formData.jackpotIncrementPercent}
+              value={String(formData.jackpotIncrementPercent)}
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -156,7 +157,7 @@ export default function SettingsPage() {
             <Input
               label="Mínimo de números por apuesta"
               type="number"
-              value={formData.minNumbersPerBet}
+              value={String(formData.minNumbersPerBet)}
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -169,7 +170,7 @@ export default function SettingsPage() {
             <Input
               label="Máximo de números por apuesta"
               type="number"
-              value={formData.maxNumbersPerBet}
+              value={String(formData.maxNumbersPerBet)}
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -182,7 +183,7 @@ export default function SettingsPage() {
             <Input
               label="Valor por defecto de apuesta"
               type="number"
-              value={formData.defaultBetValue}
+              value={String(formData.defaultBetValue)}
               onChange={(e) =>
                 setFormData({
                   ...formData,
@@ -221,8 +222,8 @@ export default function SettingsPage() {
                   setFormData({ ...formData, receiptHeader: e.target.value })
                 }
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
                 placeholder="Texto que aparece arriba del ticket"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               />
             </div>
             <div>
@@ -235,8 +236,8 @@ export default function SettingsPage() {
                   setFormData({ ...formData, receiptFooter: e.target.value })
                 }
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
                 placeholder="Texto que aparece al final del ticket"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               />
             </div>
           </div>

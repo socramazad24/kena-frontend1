@@ -22,7 +22,9 @@ export default function ReportsPage() {
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [sales, setSales] = useState<DailySales | null>(null);
   const [prizes, setPrizes] = useState<PaidPrizes | null>(null);
-  const [cashierBalances, setCashierBalances] = useState<CashierBalance[]>([]);
+  const [cashierBalances, setCashierBalances] = useState<CashierBalance[]>(
+    [],
+  );
   const [branchReports, setBranchReports] = useState<BranchReport[]>([]);
 
   useEffect(() => {
@@ -43,7 +45,10 @@ export default function ReportsPage() {
         const data = await reportsService.getPaidPrizes(date);
         setPrizes(data);
       } else if (activeTab === 'cashiers') {
-        const data = await reportsService.getBalanceByCashier(undefined, date);
+        const data = await reportsService.getBalanceByCashier(
+          undefined,
+          date,
+        );
         setCashierBalances(data);
       } else if (activeTab === 'branches') {
         const data = await reportsService.getByBranch(undefined, date);
@@ -68,7 +73,7 @@ export default function ReportsPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Reportes</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Reportes</h1>
           <p className="text-gray-500 mt-1">
             Estadísticas y reportes del sistema
           </p>
@@ -79,11 +84,12 @@ export default function ReportsPage() {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg"
+            className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-500 outline-none"
           />
         </div>
       </div>
 
+      {/* Tabs */}
       <div className="border-b border-gray-200 mb-6">
         <nav className="flex gap-4">
           {tabs.map((tab) => (
@@ -102,8 +108,9 @@ export default function ReportsPage() {
         </nav>
       </div>
 
+      {/* Contenido */}
       {loading ? (
-        <div className="flex justify-center items-center p-12">
+        <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
         </div>
       ) : (
@@ -126,7 +133,7 @@ export default function ReportsPage() {
                     ${dashboard.prizes.totalAmount.toFixed(2)}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    {dashboard.prizes.totalPaid} tickets
+                    {dashboard.prizes.totalPaid} premios
                   </p>
                 </Card>
                 <Card>
@@ -146,7 +153,7 @@ export default function ReportsPage() {
                 </Card>
                 <Card>
                   <p className="text-sm text-gray-500">Ticket Promedio</p>
-                  <p className="text-3xl font-bold text-gray-800 mt-1">
+                  <p className="text-3xl font-bold text-gray-900 mt-1">
                     ${dashboard.sales.averageTicket.toFixed(2)}
                   </p>
                 </Card>
@@ -154,17 +161,23 @@ export default function ReportsPage() {
 
               <Card title="Ventas por Sucursal">
                 <Table
-                  headers={['Sucursal', 'Tickets', 'Ventas', 'Premios', 'Ganancia']}
+                  headers={[
+                    'Sucursal',
+                    'Tickets',
+                    'Ventas',
+                    'Premios',
+                    'Ganancia',
+                  ]}
                 >
                   {dashboard.byBranch.map((b) => (
                     <tr key={b.branchId} className="hover:bg-gray-50">
                       <td className="px-6 py-4 text-sm">
-                        <p className="font-medium text-gray-800">
+                        <p className="font-medium text-gray-900">
                           {b.branchName}
                         </p>
                         <p className="text-xs text-gray-500">{b.branchCode}</p>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-800">
+                      <td className="px-6 py-4 text-sm text-gray-900">
                         {b.totalTickets}
                       </td>
                       <td className="px-6 py-4 text-sm text-green-600 font-medium">
@@ -175,7 +188,9 @@ export default function ReportsPage() {
                       </td>
                       <td
                         className={`px-6 py-4 text-sm font-bold ${
-                          b.profit >= 0 ? 'text-primary-600' : 'text-red-600'
+                          b.profit >= 0
+                            ? 'text-primary-600'
+                            : 'text-red-600'
                         }`}
                       >
                         ${b.profit.toFixed(2)}
@@ -188,65 +203,69 @@ export default function ReportsPage() {
           )}
 
           {activeTab === 'sales' && sales && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card>
-                  <p className="text-sm text-gray-500">Total Ventas</p>
-                  <p className="text-3xl font-bold text-green-600 mt-1">
-                    ${sales.totalSales.toFixed(2)}
-                  </p>
-                </Card>
-                <Card>
-                  <p className="text-sm text-gray-500">Cantidad de Tickets</p>
-                  <p className="text-3xl font-bold text-gray-800 mt-1">
-                    {sales.totalTickets}
-                  </p>
-                </Card>
-                <Card>
-                  <p className="text-sm text-gray-500">Ticket Promedio</p>
-                  <p className="text-3xl font-bold text-primary-600 mt-1">
-                    ${sales.averageTicket.toFixed(2)}
-                  </p>
-                </Card>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card>
+                <p className="text-sm text-gray-500">Total Ventas</p>
+                <p className="text-3xl font-bold text-green-600 mt-1">
+                  ${sales.totalSales.toFixed(2)}
+                </p>
+              </Card>
+              <Card>
+                <p className="text-sm text-gray-500">Cantidad de Tickets</p>
+                <p className="text-3xl font-bold text-gray-900 mt-1">
+                  {sales.totalTickets}
+                </p>
+              </Card>
+              <Card>
+                <p className="text-sm text-gray-500">Ticket Promedio</p>
+                <p className="text-3xl font-bold text-primary-600 mt-1">
+                  ${sales.averageTicket.toFixed(2)}
+                </p>
+              </Card>
             </div>
           )}
 
           {activeTab === 'prizes' && prizes && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card>
-                  <p className="text-sm text-gray-500">Tickets Pagados</p>
-                  <p className="text-3xl font-bold text-gray-800 mt-1">
-                    {prizes.totalPaid}
-                  </p>
-                </Card>
-                <Card>
-                  <p className="text-sm text-gray-500">Total Pagado</p>
-                  <p className="text-3xl font-bold text-red-600 mt-1">
-                    ${prizes.totalAmount.toFixed(2)}
-                  </p>
-                </Card>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card>
+                <p className="text-sm text-gray-500">Tickets Pagados</p>
+                <p className="text-3xl font-bold text-gray-900 mt-1">
+                  {prizes.totalPaid}
+                </p>
+              </Card>
+              <Card>
+                <p className="text-sm text-gray-500">Total Pagado</p>
+                <p className="text-3xl font-bold text-red-600 mt-1">
+                  ${prizes.totalAmount.toFixed(2)}
+                </p>
+              </Card>
             </div>
           )}
 
           {activeTab === 'cashiers' && (
-            <Card>
+            <Card title="Balance por Cajero">
               <Table
-                headers={['Cajero', 'Usuario', 'Inicial', 'Ventas', 'Premios', 'Balance', 'Estado']}
+                headers={[
+                  'Cajero',
+                  'Usuario',
+                  'Inicial',
+                  'Ventas',
+                  'Premios',
+                  'Balance',
+                  'Estado',
+                ]}
                 loading={loading}
                 emptyMessage="No hay sesiones de caja en esta fecha"
               >
                 {cashierBalances.map((c) => (
                   <tr key={c.sessionId} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-800">
+                    <td className="px-6 py-4 text-sm text-gray-900">
                       {c.cashierName}
                     </td>
                     <td className="px-6 py-4 text-sm font-mono text-gray-600">
                       @{c.username}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
+                    <td className="px-6 py-4 text-sm text-gray-900">
                       ${c.initialAmount.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm text-green-600 font-medium">
@@ -265,7 +284,9 @@ export default function ReportsPage() {
                       ${c.currentBalance.toFixed(2)}
                     </td>
                     <td className="px-6 py-4">
-                      <Badge variant={c.status === 'open' ? 'success' : 'gray'}>
+                      <Badge
+                        variant={c.status === 'open' ? 'success' : 'neutral'}
+                      >
                         {c.status === 'open' ? 'Abierta' : 'Cerrada'}
                       </Badge>
                     </td>
@@ -276,21 +297,27 @@ export default function ReportsPage() {
           )}
 
           {activeTab === 'branches' && (
-            <Card>
+            <Card title="Reporte por Sucursal">
               <Table
-                headers={['Sucursal', 'Tickets', 'Ventas', 'Premios', 'Ganancia']}
+                headers={[
+                  'Sucursal',
+                  'Tickets',
+                  'Ventas',
+                  'Premios',
+                  'Ganancia',
+                ]}
                 loading={loading}
                 emptyMessage="No hay ventas en esta fecha"
               >
                 {branchReports.map((b) => (
                   <tr key={b.branchId} className="hover:bg-gray-50">
                     <td className="px-6 py-4 text-sm">
-                      <p className="font-medium text-gray-800">
+                      <p className="font-medium text-gray-900">
                         {b.branchName}
                       </p>
                       <p className="text-xs text-gray-500">{b.branchCode}</p>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
+                    <td className="px-6 py-4 text-sm text-gray-900">
                       {b.totalTickets}
                     </td>
                     <td className="px-6 py-4 text-sm text-green-600 font-medium">
@@ -301,7 +328,9 @@ export default function ReportsPage() {
                     </td>
                     <td
                       className={`px-6 py-4 text-sm font-bold ${
-                        b.profit >= 0 ? 'text-primary-600' : 'text-red-600'
+                        b.profit >= 0
+                          ? 'text-primary-600'
+                          : 'text-red-600'
                       }`}
                     >
                       ${b.profit.toFixed(2)}

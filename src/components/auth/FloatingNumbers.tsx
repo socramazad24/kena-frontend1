@@ -31,7 +31,6 @@ export default function FloatingNumbers() {
       className="absolute inset-0 overflow-hidden"
       style={{ pointerEvents: 'none', zIndex: 0 }}
     >
-      {/* Números flotantes */}
       {numbers.map((n) => (
         <div
           key={n.id}
@@ -50,7 +49,6 @@ export default function FloatingNumbers() {
         </div>
       ))}
 
-      {/* Círculos decorativos */}
       <div
         className="absolute top-20 left-10 w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 to-primary-700 opacity-30 animate-float-slow"
         style={{ pointerEvents: 'none' }}

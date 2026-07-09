@@ -2,7 +2,7 @@ import { useState, useEffect, type FormEvent } from 'react';
 import jackpotService, { type Jackpot, type JackpotHistoryEntry } from '../../services/jackpot.service';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
+import Input from '../../components/ui/Input';
 import { useFormValidation } from '../../hooks/useFormValidation';
 import { validators } from '../../utils/validators';
 import Table from '../../components/ui/Table';

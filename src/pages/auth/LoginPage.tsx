@@ -92,13 +92,13 @@ export default function LoginPage() {
 
         {/* Card de login */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-1 text-center font-display">
+          <h2 className="text-xl font-bold text-slate-900 mb-1 text-center font-display">
             Inicia sesión para continuar
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5 mt-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Usuario
               </label>
               <input
@@ -112,21 +112,21 @@ export default function LoginPage() {
                 autoFocus
                 disabled={submitting}
                 placeholder="admin"
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition disabled:bg-gray-100 ${
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition disabled:bg-slate-100 text-slate-900 ${
                   form.touched.username && form.errors.username
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300'
+                    ? 'border-rose-500 bg-rose-50'
+                    : 'border-slate-300'
                 }`}
               />
               {form.touched.username && form.errors.username && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-rose-600">
                   ⚠️ {form.errors.username}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Contraseña
               </label>
               <input
@@ -139,21 +139,21 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 disabled={submitting}
                 placeholder="••••••••"
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition disabled:bg-gray-100 ${
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition disabled:bg-slate-100 text-slate-900 ${
                   form.touched.password && form.errors.password
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300'
+                    ? 'border-rose-500 bg-rose-50'
+                    : 'border-slate-300'
                 }`}
               />
               {form.touched.password && form.errors.password && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-rose-600">
                   ⚠️ {form.errors.password}
                 </p>
               )}
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm flex items-start">
+              <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-sm flex items-start">
                 <span className="mr-2">⚠️</span>
                 <span>{error}</span>
               </div>

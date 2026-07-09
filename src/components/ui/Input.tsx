@@ -4,7 +4,6 @@ import {
   forwardRef,
   type ChangeEvent,
 } from 'react';
-import { errorMessages } from '../../utils/validators';
 
 type RestrictionType = 'letters' | 'numbers' | 'alphanumeric' | 'none';
 type TransformType = 'uppercase' | 'lowercase' | 'none';
@@ -42,7 +41,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     function filterValue(val: string): string {
       let filtered = val;
-
       switch (restriction) {
         case 'letters':
           filtered = val.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
@@ -57,7 +55,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         default:
           break;
       }
-
       switch (transform) {
         case 'uppercase':
           filtered = filtered.toUpperCase();
@@ -69,7 +66,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         default:
           break;
       }
-
       return filtered;
     }
 
@@ -92,10 +88,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           value={value}
           onChange={handleChange}
           onBlur={onBlur}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition ${
+          className={`w-full px-4 py-2 border rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition ${
             error
               ? 'border-red-500 bg-red-50'
-              : 'border-gray-300 bg-white'
+              : 'border-gray-300'
           } ${className}`}
           {...props}
         />
@@ -115,7 +111,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = 'Input';
 
-// Textarea con las mismas mejoras
+// Textarea
 interface TextareaProps
   extends BaseProps,
     Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
@@ -140,7 +136,6 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) => {
     function filterValue(val: string): string {
       let filtered = val;
-
       switch (restriction) {
         case 'letters':
           filtered = val.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
@@ -151,7 +146,6 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         default:
           break;
       }
-
       switch (transform) {
         case 'uppercase':
           filtered = filtered.toUpperCase();
@@ -162,7 +156,6 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         default:
           break;
       }
-
       return filtered;
     }
 
@@ -185,10 +178,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           value={value}
           onChange={handleChange}
           onBlur={onBlur}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition ${
+          className={`w-full px-4 py-2 border rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition ${
             error
               ? 'border-red-500 bg-red-50'
-              : 'border-gray-300 bg-white'
+              : 'border-gray-300'
           } ${className}`}
           {...props}
         />

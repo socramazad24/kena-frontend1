@@ -2,7 +2,7 @@ import { useState, useEffect, type FormEvent } from 'react';
 import branchesService from '../../services/branches.service';
 import type { Branch } from '../../types';
 import { useFormValidation } from '../../hooks/useFormValidation';
-import { validators, errorMessages } from '../../utils/validators';
+import { validators } from '../../utils/validators';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -26,30 +26,13 @@ export default function BranchesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [error, setError] = useState('');
 
   const form = useFormValidation<FormData>(emptyForm, {
-    code: {
-      required: true,
-      minLength: 2,
-      maxLength: 10,
-      pattern: /^[A-Z0-9]+$/,
-      message: 'Solo letras mayúsculas y números (2-10 caracteres)',
-    },
-    name: {
-      required: true,
-      minLength: 3,
-      maxLength: 50,
-      custom: validators.onlyLetters,
-      message: errorMessages.onlyLetters,
-    },
-    address: {
-      maxLength: 100,
-    },
-    phone: {
-      pattern: /^[0-9\s\-]*$/,
-      message: errorMessages.phone,
-    },
+    code: { required: true, minLength: 2, maxLength: 10 },
+    name: { required: true, minLength: 3, custom: validators.onlyLetters },
+    address: { maxLength: 100 },
+    phone: { custom: validators.phone },
   });
 
   useEffect(() => {
@@ -71,7 +54,7 @@ export default function BranchesPage() {
   function openCreate() {
     form.resetForm();
     setEditingId(null);
-    setSubmitError('');
+    setError('');
     setModalOpen(true);
   }
 
@@ -83,17 +66,15 @@ export default function BranchesPage() {
       phone: branch.phone || '',
     });
     setEditingId(branch.id);
-    setSubmitError('');
+    setError('');
     setModalOpen(true);
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setSubmitError('');
-
     if (!form.validateAll()) return;
-
     setSaving(true);
+    setError('');
     try {
       if (editingId) {
         await branchesService.update(editingId, form.values);
@@ -104,9 +85,7 @@ export default function BranchesPage() {
       form.resetForm();
       await loadBranches();
     } catch (err: any) {
-      setSubmitError(
-        err.response?.data?.message || 'Error al guardar la sucursal',
-      );
+      setError(err.response?.data?.message || 'Error al guardar la sucursal');
     } finally {
       setSaving(false);
     }
@@ -137,9 +116,9 @@ export default function BranchesPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Sucursales</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Sucursales</h1>
           <p className="text-gray-500 mt-1">
-            Gestiona las sucursales del sistema
+            Gestiona las ubicaciones del sistema
           </p>
         </div>
         <Button onClick={openCreate}>+ Nueva Sucursal</Button>
@@ -149,13 +128,14 @@ export default function BranchesPage() {
         <Table
           headers={['Código', 'Nombre', 'Dirección', 'Teléfono', 'Estado', 'Acciones']}
           loading={loading}
+          emptyMessage="No hay sucursales registradas"
         >
           {branches.map((branch) => (
             <tr key={branch.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 text-sm font-mono text-gray-800">
+              <td className="px-6 py-4 text-sm font-mono font-medium text-gray-900">
                 {branch.code}
               </td>
-              <td className="px-6 py-4 text-sm text-gray-800">
+              <td className="px-6 py-4 text-sm text-gray-900">
                 {branch.name}
               </td>
               <td className="px-6 py-4 text-sm text-gray-600">
@@ -165,29 +145,33 @@ export default function BranchesPage() {
                 {branch.phone || '-'}
               </td>
               <td className="px-6 py-4">
-                <Badge variant={branch.isActive ? 'success' : 'gray'}>
+                <Badge variant={branch.isActive ? 'success' : 'neutral'}>
                   {branch.isActive ? 'Activa' : 'Inactiva'}
                 </Badge>
               </td>
               <td className="px-6 py-4 text-sm">
                 <div className="flex gap-2">
-                  <Button size="sm" variant="ghost" onClick={() => openEdit(branch)}>
-                    Editar
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => openEdit(branch)}
+                  >
+                    ✏️ Editar
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => handleToggle(branch.id)}
                   >
-                    {branch.isActive ? 'Desactivar' : 'Activar'}
+                    {branch.isActive ? '🔴' : '🟢'}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => handleDelete(branch.id)}
-                    className="text-red-600 hover:bg-red-50"
+                    className="text-red-600"
                   >
-                    Eliminar
+                    🗑️
                   </Button>
                 </div>
               </td>
@@ -215,7 +199,11 @@ export default function BranchesPage() {
           </>
         }
       >
-        <form id="branch-form" onSubmit={handleSubmit} className="space-y-4">
+        <form
+          id="branch-form"
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           <Input
             label="Código"
             name="code"
@@ -227,8 +215,6 @@ export default function BranchesPage() {
             transform="uppercase"
             required
             placeholder="Ej: SUC001"
-            maxLength={10}
-            helperText="Solo letras y números, se convierte a mayúsculas"
           />
           <Input
             label="Nombre"
@@ -240,7 +226,6 @@ export default function BranchesPage() {
             restriction="letters"
             required
             placeholder="Sucursal Principal"
-            maxLength={50}
           />
           <Input
             label="Dirección"
@@ -249,7 +234,6 @@ export default function BranchesPage() {
             onChange={form.handleChange}
             onBlur={() => form.handleBlur('address')}
             error={form.touched.address ? form.errors.address : undefined}
-            maxLength={100}
             placeholder="Av. Principal #123"
           />
           <Input
@@ -259,14 +243,11 @@ export default function BranchesPage() {
             onChange={form.handleChange}
             onBlur={() => form.handleBlur('phone')}
             error={form.touched.phone ? form.errors.phone : undefined}
-            restriction="alphanumeric"
             placeholder="555-1234"
-            maxLength={20}
-            helperText="Solo números, guiones y espacios"
           />
-          {submitError && (
+          {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              ⚠️ {submitError}
+              ⚠️ {error}
             </div>
           )}
         </form>

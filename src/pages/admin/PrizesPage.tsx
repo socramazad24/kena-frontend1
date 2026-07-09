@@ -4,7 +4,7 @@ import { useFormValidation } from '../../hooks/useFormValidation';
 import { validators } from '../../utils/validators';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
+import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
 import Modal from '../../components/ui/Modal';
 import Table from '../../components/ui/Table';

@@ -7,7 +7,7 @@ import type { Ticket, Cashier, CashSession } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
+import Input from '../../components/ui/Input';
 import { useFormValidation } from '../../hooks/useFormValidation';
 import Badge from '../../components/ui/Badge';
 

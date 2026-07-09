@@ -6,7 +6,7 @@ import cashService from '../../services/cash.service';
 import type { CashSession, Cashier, CashBalance } from '../../types';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
+import Input from '../../components/ui/Input';
 import { useFormValidation } from '../../hooks/useFormValidation';
 import { validators } from '../../utils/validators';
 import Badge from '../../components/ui/Badge';

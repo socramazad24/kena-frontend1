@@ -15,7 +15,7 @@ export default function Table({
 }: TableProps) {
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-12">
+      <div className="flex justify-center items-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
       </div>
     );
@@ -36,12 +36,12 @@ export default function Table({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-gray-100 bg-white">
           {children}
         </tbody>
       </table>
       {Array.isArray(children) && children.length === 0 && (
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-gray-400 bg-white">
           {emptyMessage}
         </div>
       )}
